@@ -3,7 +3,7 @@ const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const log = require('fancy-log');
-const del = require('del'); // Import del for file cleanup
+const del = require('del');
 
 // Clean old minified files
 function clean() {

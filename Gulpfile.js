@@ -3,6 +3,13 @@ const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const log = require('fancy-log');
+const del = require('del'); // Import del for file cleanup
+
+// Clean old minified files
+function clean() {
+    return del(['dist/ion-floating-menu.min.js', 'dist/ion-floating-menu.min.css'])
+        .then(() => log('🗑️  Old minified files removed!'));
+}
 
 // Minify & concatenate JavaScript
 function minifyJS() {
@@ -23,5 +30,5 @@ function minifyCSS() {
 }
 
 // Define build task
-exports.build = gulp.series(minifyJS, minifyCSS);
+exports.build = gulp.series(clean, minifyJS, minifyCSS);
 exports.default = exports.build;

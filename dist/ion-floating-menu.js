@@ -197,7 +197,7 @@
         var backdropHolds = 0;
 
 
-        var a = angular.element(document.querySelector('ion-tabs')).append(el[0]);
+        var a = angular.element(document.querySelector('ion-content')).append(el[0]);
 
         return {
             /**

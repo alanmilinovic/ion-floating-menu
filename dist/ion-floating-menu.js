@@ -164,8 +164,7 @@
         };
 
         $rootScope.$on('floating-menu:close-all', function () {
-            $scope.isOpen = false;
-            $scope.setClose();
+            $scope.setClose(); $timeout(function () { $scope.isOpen = false; });
         });
         var menuColor = $scope.menuColor || '#2AC9AA';
         var menuIcon = $scope.menuIcon || 'ion-plus';

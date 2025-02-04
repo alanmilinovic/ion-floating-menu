@@ -17,6 +17,6 @@
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.7",
-    "del": "^7.0.0"
+    "del": "8.0.0"
   }
 }

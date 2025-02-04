@@ -161,27 +161,28 @@
         };
 
         $scope.attachBackdropClickEvent = function () {
-        	$timeout(function () {
-            	if (document.getElementById("floatingBD"))
-                	document.getElementById("floatingBD").addEventListener("click", function (e) {
-                    	$scope.setClose(); $timeout(function () { $scope.isOpen = false; });
-                	}, false);
-            });
+            $timeout(function () {
+                if (document.getElementById("floatingBD")) {
+                    document.getElementById("floatingBD").addEventListener("click", function (e) {
+                        $scope.setClose(); $timeout(function () { $scope.isOpen = false; });
+                    }, false);
+                }
+            }, 500);
         };
 
         // Listen for state change success to recreate the backdrop
         $rootScope.$on('$stateChangeSuccess', function () {
             $timeout(function () {
                 // Recreate backdrop
-                $ionicBackdropIon.createBackdrop();
-                
-                // Attach backdrop event
-                $scope.attachBackdropClickEvent();
-                
-                if ($scope.isOpen) {
-                    $ionicBackdropIon.retain();  // Recreate and show backdrop if the menu is open
-                }
-            });
+                $ionicBackdropIon.createBackdrop().then(function () {
+                    // Attach backdrop event
+                    $scope.attachBackdropClickEvent();
+
+                    if ($scope.isOpen) {
+                        $ionicBackdropIon.retain();  // Recreate and show backdrop if the menu is open
+                    }
+                });
+            }, 500);
         });
 
         $rootScope.$on('floating-menu:close-all', function () {
@@ -245,7 +246,12 @@
              */
             release: release,
             getElement: getElement,
-            createBackdrop: createBackdrop,
+            createBackdrop: function () {
+                return new Promise((resolve) => {
+                    createBackdrop();
+                    resolve(); // Resolve the Promise after backdrop is created
+                });
+            },
             // exposed for testing
             _element: el
         };

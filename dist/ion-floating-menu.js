@@ -160,18 +160,24 @@
             }
         };
 
-        $timeout(function () {
-            if (document.getElementById("floatingBD"))
-                document.getElementById("floatingBD").addEventListener("click", function (e) {
-                    $scope.setClose(); $timeout(function () { $scope.isOpen = false; });
-                }, false);
-        });
+        $scope.attachBackdropClickEvent = function () {
+        	$timeout(function () {
+            	if (document.getElementById("floatingBD"))
+                	document.getElementById("floatingBD").addEventListener("click", function (e) {
+                    	$scope.setClose(); $timeout(function () { $scope.isOpen = false; });
+                	}, false);
+            });
+        };
 
         // Listen for state change success to recreate the backdrop
         $rootScope.$on('$stateChangeSuccess', function () {
             $timeout(function () {
-                // Remove any existing backdrop element and recreate it
+                // Recreate backdrop
                 $ionicBackdropIon.createBackdrop();
+                
+                // Attach backdrop event
+                $scope.attachBackdropClickEvent();
+                
                 if ($scope.isOpen) {
                     $ionicBackdropIon.retain();  // Recreate and show backdrop if the menu is open
                 }
@@ -190,6 +196,7 @@
         var menuOpenIconColor = $scope.menuOpenIconColor || '#fff';
         var backdrop = $scope.backdrop || false;
         $scope.setClose();
+        $scope.attachBackdropClickEvent();
         $scope.hasFooter = $scope.hasFooter || false;
         if ($scope.hasFooter) {
             $scope.bottom = '60px';

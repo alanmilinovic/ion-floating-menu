@@ -3,12 +3,12 @@ const uglify = require('gulp-uglify');
 const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const log = require('fancy-log');
-const del = require('del');
+import { deleteAsync as del } from 'del';
 
 // Clean old minified files
-function clean() {
-    return del(['dist/ion-floating-menu.min.js', 'dist/ion-floating-menu.min.css'])
-        .then(() => log('🗑️  Old minified files removed!'));
+async function clean() {
+    await deleteAsync(['dist/ion-floating-menu.min.js', 'dist/ion-floating-menu.min.css']);
+    log('🗑️  Old minified files removed!');
 }
 
 // Minify & concatenate JavaScript

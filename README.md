@@ -2,7 +2,7 @@
 
 Material UI-like Floating Action Button and Menu for Ionic applications.
 
-This version is a fork from the original plugin and includes a root scope event listner to trigger the menu closing. To close all open floating menus you can call:
+This version is a fork from the original plugin and includes backdrop tap to close, hardware back button to close and a root scope event listner to trigger the menu closing. To close all open floating menus you can call:
 
 `$rootScope.$broadcast('floating-menu:close-all')`
 
@@ -15,7 +15,8 @@ This version is a fork from the original plugin and includes a root scope event 
 
 #### Install
 
-`bower install https://github.com/rodrigovillaca/ion-floating-menu.git`
+`bower install https://github.com/alanmilinovic/ion-floating-menu.git`
+or download the project and add the files in your index.html
 
 #### JS/CSS Imports (index.html)
 

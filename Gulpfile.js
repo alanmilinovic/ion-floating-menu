@@ -1,25 +1,31 @@
-var gulp = require('gulp'),
-        gutil = require('gulp-util'),
-        uglify = require('gulp-uglify'),
-        concat  = require('gulp-concat')
-        cleanCSS = require('gulp-clean-css');
+const gulp = require('gulp');
+const uglify = require('gulp-uglify');
+const concat = require('gulp-concat');
+const cleanCSS = require('gulp-clean-css');
 
-gulp.task('build', function () {
-    gulp.src(['./dist/*.js'])
-            .pipe(uglify())
-    .pipe(concat('ion-floating-menu.min.js'))
-            .pipe(gulp.dest('dist/'));
+// Minify & concatenate JavaScript
+function minifyJS() {
+    return gulp.src('./dist/*.js') // Source JS files
+        .pipe(uglify()) // Minify JS
+        .pipe(concat('ion-floating-menu.min.js')) // Concatenate
+        .pipe(gulp.dest('dist/')); // Save output
+}
 
-    gulp.src(['./dist/*.css'])
-            .pipe(cleanCSS({compatibility: 'ie8'}))
-    .pipe(concat('ion-floating-menu.min.css'))
-            .pipe(gulp.dest('dist'))
-});
+// Minify & concatenate CSS
+function minifyCSS() {
+    return gulp.src('./dist/*.css') // Source CSS files
+        .pipe(cleanCSS({ compatibility: 'ie8' })) // Minify CSS
+        .pipe(concat('ion-floating-menu.min.css')) // Concatenate
+        .pipe(gulp.dest('dist/')); // Save output
+}
 
-/*gulp.watch('./js/*', function () {
- gulp.run('js');
- });*/
+// Watch for changes (Optional)
+function watchFiles() {
+    gulp.watch('./dist/*.js', minifyJS);
+    gulp.watch('./dist/*.css', minifyCSS);
+}
 
-gulp.task('default', ['build'], function () {
-
-});
+// Define tasks
+exports.build = gulp.series(minifyJS, minifyCSS);
+exports.watch = gulp.series(exports.build, watchFiles);
+exports.default = exports.build;

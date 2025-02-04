@@ -11,13 +11,12 @@
   },
   "author": "pregiotek <ndg@pregiotek.com>",
   "license": "MIT",
-  "type": "module",
   "devDependencies": {
     "gulp": "5.0.0",
     "gulp-clean-css": "^2.0.13",
     "gulp-concat": "^2.6.1",
     "gulp-uglify": "^3.0.2",
     "gulp-util": "^3.0.7",
-    "del": "8.0.0"
+    "del": "6.0.0"
   }
 }

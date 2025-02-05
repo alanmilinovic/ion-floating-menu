@@ -75,6 +75,7 @@
                 menuIconColor: '@?',
                 hasFooter: '=?',
                 backdrop: '=?',
+                backdropAppendSelector: '@?',
                 bottom: '@?'
             },
             template: '<ul id="floating-menu"  \n\
@@ -161,29 +162,12 @@
         };
 
         $scope.attachBackdropClickEvent = function () {
-            $timeout(function () {
-                if (document.getElementById("floatingBD")) {
-                    document.getElementById("floatingBD").addEventListener("click", function (e) {
-                        $scope.setClose(); $timeout(function () { $scope.isOpen = false; });
-                    }, false);
-                }
-            }, 500);
+            if (document.getElementById("floatingBD")) {
+                document.getElementById("floatingBD").addEventListener("click", function (e) {
+                    $scope.setClose(); $timeout(function () { $scope.isOpen = false; });
+                }, false);
+            }
         };
-
-        // Listen for state change success to recreate the backdrop
-        $rootScope.$on('$stateChangeSuccess', function () {
-            $timeout(function () {
-                // Recreate backdrop
-                $ionicBackdropIon.createBackdrop().then(function () {
-                    // Attach backdrop event
-                    $scope.attachBackdropClickEvent();
-
-                    if ($scope.isOpen) {
-                        $ionicBackdropIon.retain();  // Recreate and show backdrop if the menu is open
-                    }
-                });
-            }, 500);
-        });
 
         $rootScope.$on('floating-menu:close-all', function () {
             $scope.setClose(); $timeout(function () { $scope.isOpen = false; });
@@ -196,8 +180,12 @@
         var menuOpenIcon = $scope.menuOpenIcon || 'ion-minus';
         var menuOpenIconColor = $scope.menuOpenIconColor || '#fff';
         var backdrop = $scope.backdrop || false;
-        $scope.setClose();
+
+        // Create backdrop
+        $ionicBackdropIon.createBackdrop($scope.backdropAppendSelector);
         $scope.attachBackdropClickEvent();
+
+        $scope.setClose();
         $scope.hasFooter = $scope.hasFooter || false;
         if ($scope.hasFooter) {
             $scope.bottom = '60px';
@@ -218,18 +206,16 @@
         var el;
         var backdropHolds = 0;
 
-        function createBackdrop() {
+        function createBackdrop(backdropAppendSelector) {
             if (el) {
                 el.remove(); // Remove existing backdrop if any
             }
 
             // Create and append a new backdrop element
             el = angular.element('<div class="backdrop" id="floatingBD">');
-            angular.element(document.querySelector('ion-content')).append(el[0]);
-        }
 
-        // Call createBackdrop initially
-        createBackdrop();
+            angular.element(document.querySelector(backdropAppendSelector || 'ion-content')).append(el[0]);
+        }
 
         return {
             /**
@@ -246,11 +232,8 @@
              */
             release: release,
             getElement: getElement,
-            createBackdrop: function () {
-                return new Promise((resolve) => {
-                    createBackdrop();
-                    resolve(); // Resolve the Promise after backdrop is created
-                });
+            createBackdrop: function (backdropAppendSelector) {
+                createBackdrop(backdropAppendSelector);
             },
             // exposed for testing
             _element: el
